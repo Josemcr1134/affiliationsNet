@@ -5,7 +5,7 @@
 export const environment = {
     production: false,
     // base_url: 'https://netcareapi.ttncompany.com/api',
-    base_url: 'https://pygfurughz.hidoctor.app',
+    base_url: 'https://pygfurughz.hidoctor.app/api',
     wompi_url: 'https://sandbox.wompi.co/v1',
     pub_wompi_test: 'pub_test_0lFRLbzcrYKgi6AyL3qLBThez7I6KRki',
     wompi_redirec_url: 'http://localhost:4200/payment-response',
