@@ -1,0 +1,30 @@
+<div class="relative z-10 flex-shrink-0 flex h-16 bg-transparent border-b border-gray-200 lg:border-none">
+
+
+    <div class="flex-1 px-4 py-4  flex justify-between sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
+        <div class="flex-1 flex">
+            <div class="w-full flex md:ml-0">
+
+                <div class="relative w-full flex flex-nowrap ">
+
+                    <h1 class="text-xl font-bold leading-6 text-primary sm:truncate">{{plan_name}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="ml-4 flex items-center md:ml-6">
+            <!-- Plan link-->
+            <div class="ml-3 relative">
+                <div>
+                    <a [routerLink]="['/SelectPlan']" routerLinkActive="router-link-active" class="max-w-xs bg-transparent text-secondary rounded-full flex items-center text-sm  lg:p-2 lg:rounded-md hover:underline" id="user-menu-button">
+                        <span class="hidden ml-3  text-sm font-medium lg:block hover:underline"><span class="sr-only">Ir a  </span>Regresar</span>
+                        <!-- Heroicon name: solid/chevron-down -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

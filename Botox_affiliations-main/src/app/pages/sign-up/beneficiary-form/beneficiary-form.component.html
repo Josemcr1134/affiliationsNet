@@ -1,0 +1,479 @@
+<div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+    <div class="fixed inset-0 z-10">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl lg:max-w-3xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+            >
+                <p class="text-center py-4">
+                    <strong>
+                        <span style="font-size: 18px; font-family: 'Arial Nova', sans-serif; color: rgb(0, 0, 0)"> Registro de Beneficiarios </span>
+                    </strong>
+                </p>
+                <form [formGroup]="beneficiaryForm" autocomplete="off">
+                    <div class="modal-content bg-white px-4 pb-4 sm:p-6 sm:pb-4">
+                        <div class="grid grid-cols-6 gap-x-3 gap-y-3 mt-4">
+                            <!-- Tipo de identificación -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="document_type" class="block text-sm font-medium text-gray-700">
+                                    Tipo de identificación <span class="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="document_type"
+                                    formControlName="document_type"
+                                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                >
+                                    <option value="">Seleccione una...</option>
+                                    <option *ngFor="let documentType of documentTypes" [value]="documentType.id">
+                                        {{ documentType.name }}
+                                    </option>
+                                </select>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.document_type.touched && beneficiaryFormControls.document_type.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Número de identificación -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="document_number" class="block text-sm font-medium text-gray-700">
+                                    Número de identificación <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    id="document_number"
+                                    formControlName="document_number"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="
+                                        beneficiaryFormControls.document_number.touched && beneficiaryFormControls.document_number.errors?.required
+                                    "
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Nombres -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="first_name" class="block text-sm font-medium text-gray-700">
+                                    Nombres <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="first_name"
+                                    formControlName="first_name"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.first_name.touched && beneficiaryFormControls.first_name.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Apellidos -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="last_name" class="block text-sm font-medium text-gray-700">
+                                    Apellidos <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="last_name"
+                                    formControlName="last_name"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.last_name.touched && beneficiaryFormControls.last_name.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Correo electrónico -->
+                            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <label for="email" class="block text-sm font-medium text-gray-700">
+                                    Correo electrónico <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    formControlName="email"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.email.touched && beneficiaryFormControls.email.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.email.touched && beneficiaryFormControls.email.errors?.email"
+                                >
+                                    Debe ingresar un correo electrónico válido.
+                                </small>
+                            </div>
+                            <!-- Celular -->
+                            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <label for="phone_number" class="block text-sm font-medium text-gray-700">
+                                    Celular <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    id="phone_number"
+                                    formControlName="phone_number"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.phone_number.touched && beneficiaryFormControls.phone_number.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.phone_number.touched && beneficiaryFormControls.phone_number.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Género -->
+                            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <label for="gender" class="block text-sm font-medium text-gray-700">
+                                    Género <span class="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="gender"
+                                    formControlName="gender"
+                                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                >
+                                    <option value="">Seleccione una...</option>
+                                    <option *ngFor="let gender of genders" [value]="gender.id">
+                                        {{ gender.name }}
+                                    </option>
+                                </select>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.gender.touched && beneficiaryFormControls.gender.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Estado civil -->
+                            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <label for="marital_status" class="block text-sm font-medium text-gray-700">
+                                    Estado civil <span class="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="marital_status"
+                                    formControlName="marital_status"
+                                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                >
+                                    <option value="">Seleccione una...</option>
+                                    <option *ngFor="let maritalStatus of maritalStatuses" [value]="maritalStatus.id">
+                                        {{ maritalStatus.name }}
+                                    </option>
+                                </select>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.marital_status.touched && beneficiaryFormControls.marital_status.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Fecha de nacimiento -->
+                            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <label for="birthdate" class="block text-sm font-medium text-gray-700">
+                                    Fecha de nacimiento <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="date"
+                                    id="birthdate"
+                                    formControlName="birthdate"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.birthdate.touched && beneficiaryFormControls.birthdate.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Parentesco -->
+                            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <label for="relationship" class="block text-sm font-medium text-gray-700">
+                                    Parentesco <span class="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="relationship"
+                                    formControlName="relationship"
+                                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                >
+                                    <option value="">Seleccione una...</option>
+                                    <option value="N/A">N/A</option>
+                                    <!-- <option value="Titular">Titular</option> -->
+                                    <option value="Familiar">Familiar</option>
+                                    <option value="Amigo">Amigo</option>
+                                </select>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.relationship.touched && beneficiaryFormControls.relationship.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Dirección de residencia -->
+                            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <label for="address" class="block text-sm font-medium text-gray-700">
+                                    Dirección de residencia <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="address"
+                                    formControlName="address"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.address.touched && beneficiaryFormControls.address.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Detalles de la dirección -->
+                            <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                <label for="address_detail" class="block text-sm font-medium text-gray-700"
+                                    >Detalles de la dirección
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="address_detail"
+                                    formControlName="address_detail"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.address_detail.touched && beneficiaryFormControls.address_detail.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- País -->
+                            <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <label for="country" class="block text-sm font-medium text-gray-700">
+                                    País <span class="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="country"
+                                    formControlName="country"
+                                    (ngModelChange)="getStates($event)"
+                                    class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                >
+                                    <option value="">Seleccione una...</option>
+                                    <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+                                </select>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.country.touched && beneficiaryFormControls.country.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Departamento -->
+                            <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                <label for="department" class="block text-sm font-medium text-gray-700">
+                                    Departamento <span class="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="department"
+                                    formControlName="department"
+                                    (ngModelChange)="getMunicipality($event)"
+                                    class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                >
+                                    <option value="">Seleccione una...</option>
+                                    <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
+                                </select>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.department.touched && beneficiaryFormControls.department.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Ciudad / Municipio -->
+                            <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                <label for="municipality" class="block text-sm font-medium text-gray-700">
+                                    Ciudad / Municipio <span class="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="municipality"
+                                    formControlName="municipality"
+                                    (ngModelChange)="getNeighborhood($event)"
+                                    class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                >
+                                    <option value="">Seleccione una...</option>
+                                    <option *ngFor="let municipality of municipalities" [value]="municipality.id">
+                                        {{ municipality.name }}
+                                    </option>
+                                </select>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.municipality.touched && beneficiaryFormControls.municipality.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Barrio -->
+                            <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                <label for="neighborhood" class="block text-sm font-medium text-gray-700"
+                                    >Barrio
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="neighborhood"
+                                    formControlName="neighborhood"
+                                    class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                >
+                                    <option value="">Seleccione una...</option>
+                                    <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood.id">
+                                        {{ neighborhood.name }}
+                                    </option>
+                                </select>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.neighborhood.touched && beneficiaryFormControls.neighborhood.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                            </div>
+                            <!-- Contraseña -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="password1" class="block text-sm font-medium text-gray-700">
+                                    Contraseña
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    id="password1"
+                                    formControlName="password1"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.password1.touched && beneficiaryFormControls.password1.errors?.required"
+                                >
+                                    Campo obligatorio.
+                                </small>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.password1.touched && beneficiaryFormControls.password1.errors?.minlength"
+                                >
+                                    Mínimo 8 caracteres.
+                                </small>
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.password1.touched && beneficiaryFormControls.password1.errors?.strong"
+                                >
+                                    Debe tener al menos un número, una minúscula y una mayúscula.
+                                </small>
+                            </div>
+                            <!-- Repetir Contraseña -->
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="password2" class="block text-sm font-medium text-gray-700">
+                                    Repite tu contraseña
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    id="password2"
+                                    formControlName="password2"
+                                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                                <small
+                                    class="text-red-600"
+                                    *ngIf="beneficiaryFormControls.password2.touched && beneficiaryFormControls.password2.errors?.confirmedValidator"
+                                >
+                                    Las contraseñas no coinciden.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 pb-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <div class="md:grid md:grid-cols-3 md:gap-6">
+                            <div class="mt-5 md:mt-0 md:col-span-3">
+                                <!-- <div class="space-y-6">
+                                                <fieldset>
+                                                    <legend class="text-base font-medium text-gray-900">Indicación legal</legend>
+                                                    <div class="mt-4 space-y-4">
+                                                        <div class="flex items-start">
+                                                            <div class="h-5 flex items-center">
+                                                                <input
+                                                                    value="true"
+                                                                    id="terms_and_conditions"
+                                                                    formControlName="terms_and_conditions"
+                                                                    type="checkbox"
+                                                                    class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                                                />
+                                                            </div>
+                                                            <div class="ml-3 text-sm flex flex-nowrap">
+                                                                <p class="text-gray-500">He leído y acepto las</p>
+                                                                <span class="underline mx-1 cursor-pointer" (click)="openModalTerms = !openModalTerms"
+                                                                    >términos, condiciones y políticas de privacidad</span
+                                                                >
+                                                                <span class="text-red-500">*</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-4 space-y-4">
+                                                        <div class="flex items-start">
+                                                            <div class="h-5 flex items-center">
+                                                                <input
+                                                                    value="true"
+                                                                    id="privacy_policy"
+                                                                    formControlName="privacy_policy"
+                                                                    type="checkbox"
+                                                                    class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                                                />
+                                                            </div>
+                                                            <div class="ml-3 text-sm flex flex-nowrap">
+                                                                <p class="text-gray-500">He leído y acepto las</p>
+                                                                <span
+                                                                    class="underline mx-1 cursor-pointer"
+                                                                    (click)="openModalPrivacy = !openModalPrivacy"
+                                                                    >políticas de privacidad</span
+                                                                >
+                                                                <span class="text-red-500">*</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div> -->
+                            </div>
+                            <div class="md:col-span-3 flex justify-end gap-x-4">
+                                <button
+                                    type="button"
+                                    [disabled]="beneficiaryForm.invalid || loading"
+                                    (click)="saveBeneficiary()"
+                                    class="w-full ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+                                >
+                                    Guardar
+                                </button>
+                                <button
+                                    type="button"
+                                    class="w-full mt-3 inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                    (click)="closeModal()"
+                                >
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

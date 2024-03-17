@@ -1,0 +1,42 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.text-primary {
+    color: #0fb6cc;
+}
+.text-secondary {
+    color: #542583;
+}
+
+.btn-primary {
+    background-color: #542583;
+}
+
+.active {
+    background-color: white !important;
+    color: #542583 !important;
+}
+
+.text-primary,
+.text-primary:hover {
+    color: #542583 !important;
+}
+.bg-primary {
+    background-color: #542583 !important;
+}
+button.bg-primary:hover,
+a.bg-primary:hover {
+    background-color: rgb(84, 37, 130, 0.9) !important;
+    font-weight: bold;
+}
+button.bg-primary:disabled,
+button.bg-primary[disabled] {
+    border: 1px solid #999999;
+    background-color: #c3c3c3 !important;
+}
+button.bg-primary:disabled:hover,
+button.bg-primary[disabled]:hover {
+    font-weight: medium;
+}

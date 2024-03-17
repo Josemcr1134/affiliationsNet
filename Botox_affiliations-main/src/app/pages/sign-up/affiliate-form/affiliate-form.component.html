@@ -1,0 +1,442 @@
+<div class="flex flex-col p-x-8">
+    <div class="flex flex-col gap-y-4 items-center sm:items-start">
+        <img class="h-12 w-auto" src="assets/images/logo-netcare-horizontal.svg" alt="Netcare" />
+        <span class="text-2xl">Registro de Afiliados</span>
+        <span class="text-lg">Titular de la cuenta</span>
+    </div>
+    <div *ngIf="!showMainAffiliateCard">
+        <form [formGroup]="affiliatesForm" autocomplete="off">
+            <div class="grid grid-cols-6 gap-x-3 gap-y-3 mt-4">
+                <!-- Tipo de identificación -->
+                <div class="col-span-6 sm:col-span-3">
+                    <label for="document_type" class="block text-sm font-medium text-gray-700">
+                        Tipo de identificación <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                        id="document_type"
+                        formControlName="document_type"
+                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                        <option value="">Seleccione una...</option>
+                        <option *ngFor="let documentType of documentTypes" [value]="documentType.id">
+                            {{ documentType.name }}
+                        </option>
+                    </select>
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.document_type.touched && affiliatesFormControls.document_type.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Número de identificación -->
+                <div class="col-span-6 sm:col-span-3">
+                    <label for="document_number" class="block text-sm font-medium text-gray-700">
+                        Número de identificación <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        id="document_number"
+                        formControlName="document_number"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.document_number.touched && affiliatesFormControls.document_number.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Nombres -->
+                <div class="col-span-6 sm:col-span-3">
+                    <label for="first_name" class="block text-sm font-medium text-gray-700"> Nombres <span class="text-red-500">*</span> </label>
+                    <input
+                        type="text"
+                        id="first_name"
+                        formControlName="first_name"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.first_name.touched && affiliatesFormControls.first_name.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Apellidos -->
+                <div class="col-span-6 sm:col-span-3">
+                    <label for="last_name" class="block text-sm font-medium text-gray-700"> Apellidos <span class="text-red-500">*</span> </label>
+                    <input
+                        type="text"
+                        id="last_name"
+                        formControlName="last_name"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small class="text-red-600" *ngIf="affiliatesFormControls.last_name.touched && affiliatesFormControls.last_name.errors?.required">
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Correo electrónico -->
+                <div class="col-span-6 sm:col-span-3">
+                    <label for="email" class="block text-sm font-medium text-gray-700">
+                        Correo electrónico <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        formControlName="email"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small class="text-red-600" *ngIf="affiliatesFormControls.email.touched && affiliatesFormControls.email.errors?.required">
+                        Campo obligatorio.
+                    </small>
+                    <small class="text-red-600" *ngIf="affiliatesFormControls.email.touched && affiliatesFormControls.email.errors?.email">
+                        Debe ingresar un correo electrónico válido.
+                    </small>
+                </div>
+                <!-- Celular -->
+                <div class="col-span-6 sm:col-span-3">
+                    <label for="phone_number" class="block text-sm font-medium text-gray-700"> Celular <span class="text-red-500">*</span> </label>
+                    <input
+                        type="number"
+                        id="phone_number"
+                        formControlName="phone_number"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.phone_number.touched && affiliatesFormControls.phone_number.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.phone_number.touched && affiliatesFormControls.phone_number.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Género -->
+                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label for="gender" class="block text-sm font-medium text-gray-700"> Género <span class="text-red-500">*</span> </label>
+                    <select
+                        id="gender"
+                        formControlName="gender"
+                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                        <option value="">Seleccione una...</option>
+                        <option *ngFor="let gender of genders" [value]="gender.id">
+                            {{ gender.name }}
+                        </option>
+                    </select>
+                    <small class="text-red-600" *ngIf="affiliatesFormControls.gender.touched && affiliatesFormControls.gender.errors?.required">
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Estado civil -->
+                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label for="marital_status" class="block text-sm font-medium text-gray-700">
+                        Estado civil <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                        id="marital_status"
+                        formControlName="marital_status"
+                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                        <option value="">Seleccione una...</option>
+                        <option *ngFor="let maritalStatus of maritalStatuses" [value]="maritalStatus.id">
+                            {{ maritalStatus.name }}
+                        </option>
+                    </select>
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.marital_status.touched && affiliatesFormControls.marital_status.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Fecha de nacimiento -->
+                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label for="birthdate" class="block text-sm font-medium text-gray-700">
+                        Fecha de nacimiento <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="date"
+                        id="birthdate"
+                        formControlName="birthdate"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small class="text-red-600" *ngIf="affiliatesFormControls.birthdate.touched && affiliatesFormControls.birthdate.errors?.required">
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Dirección de residencia -->
+                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label for="address" class="block text-sm font-medium text-gray-700">
+                        Dirección de residencia <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="address"
+                        formControlName="address"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small class="text-red-600" *ngIf="affiliatesFormControls.address.touched && affiliatesFormControls.address.errors?.required">
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Detalles de la dirección -->
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label for="address_detail" class="block text-sm font-medium text-gray-700"
+                        >Detalles de la dirección
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="address_detail"
+                        formControlName="address_detail"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.address_detail.touched && affiliatesFormControls.address_detail.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- País -->
+                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label for="country" class="block text-sm font-medium text-gray-700"> País <span class="text-red-500">*</span> </label>
+                    <select
+                        id="country"
+                        formControlName="country"
+                        (ngModelChange)="getStates($event)"
+                        class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    >
+                        <option value="">Seleccione una...</option>
+                        <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+                    </select>
+                    <small class="text-red-600" *ngIf="affiliatesFormControls.country.touched && affiliatesFormControls.country.errors?.required">
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Departamento -->
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label for="department" class="block text-sm font-medium text-gray-700"> Departamento <span class="text-red-500">*</span> </label>
+                    <select
+                        id="department"
+                        formControlName="department"
+                        (ngModelChange)="getMunicipality($event)"
+                        class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    >
+                        <option value="">Seleccione una...</option>
+                        <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
+                    </select>
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.department.touched && affiliatesFormControls.department.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Ciudad / Municipio -->
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label for="municipality" class="block text-sm font-medium text-gray-700">
+                        Ciudad / Municipio <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                        id="municipality"
+                        formControlName="municipality"
+                        (ngModelChange)="getNeighborhood($event)"
+                        class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    >
+                        <option value="">Seleccione una...</option>
+                        <option *ngFor="let municipality of municipalities" [value]="municipality.id">{{ municipality.name }}</option>
+                    </select>
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.municipality.touched && affiliatesFormControls.municipality.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Barrio -->
+                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label for="neighborhood" class="block text-sm font-medium text-gray-700"
+                        >Barrio
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                        id="neighborhood"
+                        formControlName="neighborhood"
+                        class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    >
+                        <option value="">Seleccione una...</option>
+                        <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood.id">{{ neighborhood.name }}</option>
+                    </select>
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.neighborhood.touched && affiliatesFormControls.neighborhood.errors?.required"
+                    >
+                        Campo obligatorio.
+                    </small>
+                </div>
+                <!-- Contraseña -->
+                <div class="col-span-6 sm:col-span-3">
+                    <label for="password1" class="block text-sm font-medium text-gray-700">
+                        Contraseña
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="password"
+                        id="password1"
+                        formControlName="password1"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small class="text-red-600" *ngIf="affiliatesFormControls.password1.touched && affiliatesFormControls.password1.errors?.required">
+                        Campo obligatorio.
+                    </small>
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.password1.touched && affiliatesFormControls.password1.errors?.minlength"
+                    >
+                        Mínimo 8 caracteres.
+                    </small>
+                    <small class="text-red-600" *ngIf="affiliatesFormControls.password1.touched && affiliatesFormControls.password1.errors?.strong">
+                        Debe tener al menos un número, una minúscula y una mayúscula.
+                    </small>
+                </div>
+                <!-- Repetir Contraseña -->
+                <div class="col-span-6 sm:col-span-3">
+                    <label for="password2" class="block text-sm font-medium text-gray-700">
+                        Repite tu contraseña
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="password"
+                        id="password2"
+                        formControlName="password2"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                    <small
+                        class="text-red-600"
+                        *ngIf="affiliatesFormControls.password2.touched && affiliatesFormControls.password2.errors?.confirmedValidator"
+                    >
+                        Las contraseñas no coinciden.
+                    </small>
+                </div>
+            </div>
+            <div class="mt-5 md:grid md:grid-cols-3 md:gap-6">
+                <div class="mt-5 md:mt-0 md:col-span-3">
+                    <div class="space-y-6">
+                        <fieldset>
+                            <legend class="text-base font-medium text-gray-900">Indicación legal</legend>
+                            <div class="mt-4 space-y-4">
+                                <div class="flex items-start">
+                                    <div class="h-5 flex items-center">
+                                        <input
+                                            value="true"
+                                            id="terms_and_conditions"
+                                            formControlName="terms_and_conditions"
+                                            type="checkbox"
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                        />
+                                    </div>
+                                    <div class="ml-3 text-sm flex flex-nowrap">
+                                        <p class="text-gray-500">He leído y acepto las</p>
+                                        <span class="underline mx-1 cursor-pointer" (click)="openModalTerms = !openModalTerms"
+                                            >términos, condiciones y políticas de privacidad</span
+                                        >
+                                        <span class="text-red-500">*</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 space-y-4">
+                                <div class="flex items-start">
+                                    <div class="h-5 flex items-center">
+                                        <input
+                                            value="true"
+                                            id="privacy_policy"
+                                            formControlName="privacy_policy"
+                                            type="checkbox"
+                                            class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                        />
+                                    </div>
+                                    <div class="ml-3 text-sm flex flex-nowrap">
+                                        <p class="text-gray-500">He leído y acepto las</p>
+                                        <span class="underline mx-1 cursor-pointer" (click)="openModalPrivacy = !openModalPrivacy"
+                                            >políticas de privacidad</span
+                                        >
+                                        <span class="text-red-500">*</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="md:col-span-3 flex justify-end">
+                    <button
+                        type="button"
+                        [disabled]="affiliatesForm.invalid || loading"
+                        (click)="saveAffiliate()"
+                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+                    >
+                        Continuar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div *ngIf="showMainAffiliateCard">
+        <div class="flex flex-col md:flex-row shadow-sm p-5">
+            <div class="grow flex flex-col md:flex-row flex-wrap gap-x-5">
+                <div class="flex flex-row justify-between gap-4 text-md md:text-xl pb-3">
+                    <span class="font-bold">Documento Nro:</span>
+                    <span>
+                        {{ affiliatesFormControls.document_number.value }}
+                    </span>
+                </div>
+                <div class="flex flex-row justify-between gap-4 text-md md:text-xl pb-3">
+                    <span class="font-bold">Nombre Completo:</span>
+                    <span>
+                        {{ affiliatesFormControls.first_name.value }}
+                        {{ affiliatesFormControls.last_name.value }}
+                    </span>
+                </div>
+                <div class="flex flex-row justify-between gap-4 text-md md:text-xl pb-3">
+                    <span class="font-bold">Correo:</span>
+                    <span>
+                        {{ affiliatesFormControls.email.value }}
+                    </span>
+                </div>
+                <div class="flex flex-row justify-between gap-4 text-md md:text-xl pb-3">
+                    <span class="font-bold">Celular:</span>
+                    <span>
+                        {{ affiliatesFormControls.phone_number.value }}
+                    </span>
+                </div>
+            </div>
+            <div class="grid">
+                <button class="text-primary hover:bg-primary hover:text-white" (click)="editMainAffiliate()">EDITAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Terms And Conditions -->
+<app-terms-conditions *ngIf="openModalTerms" (responseTermAndConditions)="responseTermAndConditions($event)"></app-terms-conditions>
+<!-- End Modal Terms And Conditions -->
+
+<!-- Modal Privacy Policies -->
+<app-privacy-policies *ngIf="openModalPrivacy" (responsePrivacyPolicies)="responsePrivacyPolicies($event)"></app-privacy-policies>
+<!-- End Modal Privacy Policies -->
+
+<div
+    *ngIf="loading"
+    wire:loading
+    class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-500 opacity-75 flex flex-col items-center justify-center"
+>
+    <div class="loader ease-linear rounded-full border-4 border-t-4 border-purple-200 h-12 w-12 mb-4"></div>
+    <h2 class="text-center text-white text-xl font-semibold">Estamos procesando y validando tus datos...</h2>
+    <p class="w-1/3 text-center text-white">Esto puede tomar varios segundos, por favor no cierre ni refresque esta pantalla.</p>
+</div>

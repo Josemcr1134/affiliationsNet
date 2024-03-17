@@ -1,0 +1,62 @@
+<div class="flex items-center justify-center h-full">
+    <div class="px-1 pt-10 md:flex-row w-2/5">
+        <div class="grow bg-white mb-10 p-8 rounded-lg shadow-lg">
+            <div class="flex flex-col gap-y-4 items-center">
+                <img class="h-12 w-auto" src="assets/images/logo-netcare-horizontal.svg" alt="Netcare" />
+                <h1 class="text-primary text-3xl">Detalles del pago</h1>
+            </div>
+            <br />
+            <div class="flex flex-col" *ngIf="currentUserID && paymentInfo.user_id; else paymentNotFound">
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Usuario:</span>
+                    <span class="flex-1 text-left">{{ paymentInfo.full_name }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Telefono:</span>
+                    <span class="flex-1 text-left">{{ paymentInfo.phone_number }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Email:</span>
+                    <span class="flex-1 text-left">{{ paymentInfo.email }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Plan:</span>
+                    <span class="flex-1 text-left">{{ paymentInfo.plan_name }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Valor:</span>
+                    <span class="flex-1 text-left">{{ paymentInfo.plan_value | currency }}</span>
+                </div>
+                <form action="https://checkout.wompi.co/p/" method="GET" class="flex flex-col gap-y-4 items-center w-full">
+                    <!-- REQUIRED -->
+                    <input type="hidden" name="public-key" [value]="publicKey" />
+                    <input type="hidden" name="currency" [value]="paymentInfo.currency" />
+                    <input type="hidden" name="amount-in-cents" [value]="paymentInfo.amount" />
+                    <input type="hidden" name="reference" [value]="paymentInfo.reference" />
+                    <input type="hidden" name="signature:integrity" [value]="paymentInfo.signature_integrity" />
+                    <!-- OPTIONAL -->
+                    <input type="hidden" name="redirect-url" [value]="redirectUrl" />
+                    <input type="hidden" name="customer-data:email" [value]="paymentInfo.email" />
+                    <input type="hidden" name="customer-data:full-name" [value]="paymentInfo.full_name" />
+                    <input type="hidden" name="customer-data:phone-number" [value]="paymentInfo.phone_number" />
+                    <input type="hidden" name="customer-data:legal-id" [value]="paymentInfo.legal_id" />
+                    <input type="hidden" name="customer-data:legal-id-type" [value]="paymentInfo.legal_id_type" />
+                    <button
+                        type="submit"
+                        class="bg-primary text-white hover:bg-primary mt-8 block w-3/5 py-3 px-6 border border-transparent rounded-md text-center font-medium"
+                    >
+                        Pagar
+                    </button>
+                </form>
+            </div>
+            <ng-template #paymentNotFound>
+                <div class="flex flex-col gap-y-4 items-center">
+                    <h1 class="font-medium text-md">No se encuentra información del pago en el sistema.</h1>
+                    <a [routerLink]="['/select-plan']" class="bg-primary p-3 border border-transparent rounded-md text-center font-medium text-white">
+                        Ver Planes
+                    </a>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

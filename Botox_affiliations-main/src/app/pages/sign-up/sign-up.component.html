@@ -1,0 +1,123 @@
+<div class="flex flex-col gap-5 mx-5 mb-5 px-1 pt-10 md:px-20 md:flex-row">
+    <!-- Registro de afiliados -->
+    <div class="grow bg-white mb-10 p-8 rounded-lg shadow-lg" *ngIf="planSelected">
+        <app-affiliate-form [planSelected]="planSelected" (isOpenMainAffiliateForm)="onIsOpenMainAffiliateForm($event)"></app-affiliate-form>
+        <div class="flex flex-col" *ngIf="!isOpenMainAffiliateForm">
+            <div class="flex flex-row justify-end">
+                <button
+                    class="bg-primary text-white hover:bg-primary mt-8 block py-3 px-6 border border-transparent rounded-md text-center font-medium"
+                    [disabled]="beneficiaryDataList.length >= planSelected.max_affiliates"
+                    (click)="showBeneficiaryModal = true"
+                >
+                    Agregar Beneficiario
+                </button>
+            </div>
+            <table class="table-auto w-full mt-5 border-collapse border border-slate-800">
+                <thead>
+                    <tr class="bg-primary text-white">
+                        <th class="border p-3">Documento Nro</th>
+                        <th class="border p-3">Nombre Completo</th>
+                        <th class="border p-3">Correo</th>
+                        <th class="border p-3">Celular</th>
+                        <th class="border p-3">Fecha de Nacimiento</th>
+                        <th class="border w-[90px]"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let beneficiary of beneficiaryDataList">
+                        <td class="border p-2">{{ beneficiary.document_number }}</td>
+                        <td class="border p-2">{{ beneficiary.first_name }} {{ beneficiary.last_name }}</td>
+                        <td class="border p-2">{{ beneficiary.email }}</td>
+                        <td class="border p-2">{{ beneficiary.phone_number }}</td>
+                        <td class="border p-2">{{ beneficiary.birthdate }}</td>
+                        <td class="border px-4 py-2">
+                            <div class="flex flex-row justify-between">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 text-primary hover:cursor-pointer"
+                                    (click)="editBeneficiary(beneficiary)"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                                    />
+                                </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 text-primary hover:cursor-pointer"
+                                    (click)="deleteBeneficiary(beneficiary)"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                    />
+                                </svg>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="beneficiaryDataList.length === 0">
+                        <td class="border px-4 py-2 text-center" colspan="6">No hay ningún beneficiario</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Boton de pagar -->
+    <div class="flex-none mb-5 w-full h-full bg-white p-6 md:w-1/4 rounded-lg shadow-lg" *ngIf="planSelected">
+        <div class="flex flex-row justify-between mb-5 gap-3">
+            <span class="text-primary text-2xl font-bold">{{ planSelected.name }}</span>
+            <a [routerLink]="['/select-plan']" class="flex items-center justify-center text-primary underline underline-offset-2">Cambiar</a>
+        </div>
+        <div class="flex flex-row justify-between text-md md:text-lg pb-3 text-right">
+            <span>Beneficiarios:</span>
+            <span>{{ planSelected.max_affiliates }}</span>
+        </div>
+        <div class="flex flex-row justify-between text-md md:text-lg pb-3 text-right">
+            <span>Valor:</span>
+            <span>{{ planSelected.affiliate_fee | currency }}</span>
+        </div>
+        <div *ngIf="planSelected.max_extra_affiliates > 0">
+            <div class="flex flex-row justify-between text-md md:text-lg pb-3 text-right">
+                <span>Máximo de afiliados extras:</span>
+                <span>{{ planSelected.max_extra_affiliates }}</span>
+            </div>
+            <div class="flex flex-row justify-between text-md md:text-lg pb-3 text-right">
+                <span>Valor Afiliado extra:</span>
+                <span>{{ planSelected.extra_affiliate_fee | currency }}</span>
+            </div>
+            <div class="flex flex-row justify-between text-md md:text-lg pb-3 text-right">
+                <span>Total por afiliados extra:</span>
+                <span>{{ planSelected.extra_affiliate_fee * amountExtraAffiliate | currency }}</span>
+            </div>
+        </div>
+        <div class="flex flex-row justify-between text-primary font-bold text-xl mt-4 pb-3 text-right md:text-2xl">
+            <span>Total a Pagar:</span>
+            <span>{{ planSelected.affiliate_fee | currency }}</span>
+        </div>
+        <button
+            class="bg-primary text-white hover:bg-primary mt-8 block w-full py-3 px-6 border border-transparent rounded-md text-center font-medium"
+            [disabled]="beneficiaryDataList.length < planSelected.max_affiliates"
+            (click)="saveData()"
+        >
+            Pagar
+        </button>
+    </div>
+</div>
+<!-- Modal de Beneficiarios -->
+<app-beneficiary-form
+    *ngIf="showBeneficiaryModal"
+    [planSelected]="planSelected"
+    [beneficiaryToEdit]="beneficiaryToEdit"
+    (closeBeneficiaryModal)="onCloseBeneficiaryModal($event)"
+></app-beneficiary-form>
+<!-- Fin Modal de Beneficiarios -->

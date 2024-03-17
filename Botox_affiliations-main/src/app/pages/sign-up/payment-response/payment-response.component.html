@@ -1,0 +1,71 @@
+<div class="flex items-center justify-center h-full">
+    <div class="px-1 pt-10 md:flex-row w-2/5 print:w-full">
+        <div class="grow bg-white mb-10 p-8 rounded-lg shadow-lg print:shadow-none">
+            <div class="flex flex-col gap-y-4 items-center">
+                <img class="h-12 w-auto" src="assets/images/logo-netcare-horizontal.svg" alt="Netcare" />
+                <h1 class="text-primary text-3xl">Detalles del pago</h1>
+            </div>
+            <br />
+            <div class="flex flex-col gap-y-2" *ngIf="transactionDetails">
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Referencia:</span>
+                    <span class="flex-1 text-left">{{ transactionDetails.reference }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Transacción Id:</span>
+                    <span class="flex-1 text-left">{{ transactionDetails.wompi_transaction_id }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Estado:</span>
+                    <span class="flex-1 text-left">{{ transactionDetails.wompi_transaction_status }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Usuario:</span>
+                    <span class="flex-1 text-left">{{ transactionDetails.user }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Telefono:</span>
+                    <span class="flex-1 text-left">{{ transactionDetails.phone_number }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Email:</span>
+                    <span class="flex-1 text-left">{{ transactionDetails.email }}</span>
+                </div>
+                <div class="flex flex-row gap-4 text-md md:text-lg pb-3 text-right">
+                    <span class="flex-none w-44 font-bold">Plan:</span>
+                    <span class="flex-1 text-left">{{ transactionDetails.amount | currency }}</span>
+                </div>
+                <div class="flex flex-row gap-y-4 gap-4 justify-center items-center print:hidden">
+                    <button
+                        class="bg-primary w-3/5 p-2 border border-transparent rounded-md text-center font-medium text-white"
+                        (click)="printDocument()"
+                    >
+                        Imprimir
+                    </button>
+                    <a
+                        href="https://netcare.life"
+                        class="bg-primary w-3/5 p-2 border border-transparent rounded-md text-center font-medium text-white"
+                        >Ir a Netcare</a
+                    >
+                </div>
+                <div
+                    class="flex flex-row gap-y-4 gap-4 justify-center items-center print:hidden"
+                    *ngIf="transactionDetails.transaction_status === 'PENDING'"
+                >
+                    <button class="text-primary w-3/5 p-2 border border-transparent rounded-md text-center font-medium" (click)="getPaymentDetails()">
+                        Verificar Transacción
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOADING SCREEN -->
+<div
+    *ngIf="loading"
+    class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-90 flex flex-col items-center justify-center"
+>
+    <div class="loader ease-linear rounded-full border-4 border-t-4 border-purple-200 h-12 w-12 mb-4"></div>
+    <h2 class="text-center text-white text-xl font-bold">Estamos procesando y validando tu pago...</h2>
+    <p class="w-1/3 text-center text-white font-bold">Esto puede tomar varios segundos, porfavor no cierre ni refresque esta pantalla.</p>
+</div>

@@ -1,0 +1,899 @@
+<div class="mx-auto sm:px-6 lg:px-8">
+    <div class="p-5 bg-white rounded-md mb-5" *ngFor="let p of Parent">
+        <h2 class="text-xl leading-6 font-medium text-gray-900">Titular de la cuenta</h2>
+        <p class="text-sm mb-3 leading-6 font-normal text-gray-400">Indivación principal</p>
+
+        <div class="lg:p-0 mt-4 py-5 sm:rounded-lg mb-3">
+            <div class="md:grid md:grid-cols-3 md:gap-6">
+                <div class="md:mt-0 md:col-span-3">
+                    <div class="grid grid-cols-6 gap-6">
+                        <!-- Tipo de identificación -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="type-id" class="block text-sm font-medium text-gray-700">
+                                Tipo de identificación <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="type-id"
+                                name="type-id"
+                                [(ngModel)]="p.user.document_type"
+                                autocomplete="type-id"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let d of Documents" [value]="d.id">{{ d.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Número de identificación -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="id-number" class="block text-sm font-medium text-gray-700">
+                                Número de identificación <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="number"
+                                name="id-number"
+                                [(ngModel)]="p.user.document"
+                                id="id-number"
+                                autocomplete="id-number"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Nombres -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="first-name" class="block text-sm font-medium text-gray-700">
+                                Nombres <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="first-name"
+                                [(ngModel)]="p.user.first_name"
+                                id="first-name"
+                                autocomplete="given-name"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Apellidos -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="last-name" class="block text-sm font-medium text-gray-700">
+                                Apellidos <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="last-name"
+                                [(ngModel)]="p.user.last_name"
+                                id="last-name"
+                                autocomplete="family-name"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Correo electrónico -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="affiliate-email" class="block text-sm font-medium text-gray-700">
+                                Correo electrónico <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="email"
+                                name="affiliate-email"
+                                [(ngModel)]="p.user.email"
+                                (keyup)="validateEmail(p.user.email)"
+                                id="affiliate-email"
+                                autocomplete="affiliate-email"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                            <small class="text-red-600" *ngIf="email_status === false && p.user.email.length > 0">Este email no es válido </small>
+                        </div>
+                        <!-- Celular -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="phone-number" class="block text-sm font-medium text-gray-700">
+                                Celular <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="number"
+                                name="phone-number"
+                                [(ngModel)]="p.user.phone_number"
+                                id="phone-number"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                            <small class="text-red-500 animate-bounce" *ngIf="p.user.phone_number.toString().length > 10"
+                                >Carácteres permitidos: 10</small
+                            >
+                            <small
+                                class="text-red-600"
+                                *ngIf="p.user.phone_number.toString().length < 10 && p.user.phone_number.toString().length > 1"
+                                >Este número no es válido</small
+                            >
+                        </div>
+                        <!-- Género -->
+                        <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                            <label for="gender" class="block text-sm font-medium text-gray-700"> Género <span class="text-red-500">*</span> </label>
+                            <select
+                                id="gender"
+                                name="gender"
+                                [(ngModel)]="p.user.gender"
+                                autocomplete="gender"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                                <option [value]="g.id" *ngFor="let g of Genders">{{ g.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Estado civil -->
+                        <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                            <label for="civi-status" class="block text-sm font-medium text-gray-700">
+                                Estado civil <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="civi-status"
+                                name="civi-status"
+                                [(ngModel)]="p.affiliate.marital_status"
+                                autocomplete="civi-status"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let maritalStatus of maritalStatusList" [value]="maritalStatus.id">
+                                    {{ maritalStatus.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <!-- Fecha de nacimiento -->
+                        <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                            <label for="birthday" class="block text-sm font-medium text-gray-700">
+                                Fecha de nacimiento <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="date"
+                                name="birthday"
+                                id="birthday"
+                                [(ngModel)]="p.affiliate.birthdate"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Parentesco -->
+                        <!-- <div class="col-span-6 sm:col-span-3">
+                            <label for="relationship" class="block text-sm font-medium text-gray-700">
+                                Parentesco <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="relationship"
+                                name="relationship"
+                                [(ngModel)]="p.affiliate.relationship"
+                                autocomplete="relationship"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                                <option value="N/A">N/A</option>
+                                <option value="Titular">Titular</option>
+                                <option value="Familiar">Familiar</option>
+                                <option value="Amigo">Amigo</option>
+                            </select>
+                        </div> -->
+                        <!-- Dirección de residencia -->
+                        <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                            <label for="address-user" class="block text-sm font-medium text-gray-700">
+                                Dirección de residencia <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="address-user"
+                                [(ngModel)]="p.address.name"
+                                id="address-user"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Detalles de la dirección -->
+                        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                            <label for="region" class="block text-sm font-medium text-gray-700"
+                                >Detalles de la dirección
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="address-details-user"
+                                [(ngModel)]="p.address.address_detail"
+                                id="address-details-user"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- País -->
+                        <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                            <label for="country" class="block text-sm font-medium text-gray-700"> País <span class="text-red-500">*</span> </label>
+                            <select
+                                id="country"
+                                [(ngModel)]="country"
+                                name="country"
+                                (change)="GetDpt(country)"
+                                class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let c of Countries" [value]="c.id">{{ c.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Departamento -->
+                        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                            <label for="department" class="block text-sm font-medium text-gray-700">
+                                Departamento <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="department"
+                                [disabled]="Dpts.length === 0"
+                                [(ngModel)]="dpt"
+                                (change)="GetMunicipality(dpt)"
+                                name="department"
+                                class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let d of Dpts" [value]="d.id">{{ d.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Ciudad / Municipio -->
+                        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                            <label for="city" class="block text-sm font-medium text-gray-700">
+                                Ciudad / Municipio <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="city"
+                                [(ngModel)]="municipality"
+                                [disabled]="Municipalities.length === 0"
+                                name="city"
+                                (change)="GetNeighborhood(municipality)"
+                                class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let m of Municipalities" [value]="m.id">{{ m.name }}</option>
+                            </select>
+                        </div>
+                        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                            <label for="neighborhood" class="block text-sm font-medium text-gray-700"
+                                >Barrio
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="neighborhood"
+                                [disabled]="Neighborhoods.length === 0"
+                                [(ngModel)]="p.address.neighborhood"
+                                name="neighborhood"
+                                class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let n of Neighborhoods" [value]="n.id">{{ n.name }}</option>
+                            </select>
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="affiliate-password1" class="block text-sm font-medium text-gray-700"
+                                >Contraseña
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="password"
+                                name="affiliate-password1"
+                                [(ngModel)]="p.user.password1"
+                                id="affiliate-password1"
+                                autocomplete="affiliate-password1"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                            <small
+                                class="text-red-600"
+                                *ngIf="p.user.password1 !== p.user.password2 && p.user.password1.length > 0 && p.user.password2.length > 0"
+                                >Las contraseñas no coinciden</small
+                            >
+                            <p class="mt-2 text-sm text-gray-500">
+                                Mínimo 8 caracteres, no debe coincidir en ningun momento al correo y ni usuario, debe ser alfanumerica
+                            </p>
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="affiliate-password2" class="block text-sm font-medium text-gray-700"
+                                >Repite tu contraseña
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="password"
+                                name="affiliate-password2"
+                                [(ngModel)]="p.user.password2"
+                                id="affiliate-password2"
+                                autocomplete="affiliate-password2"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                            <small
+                                class="text-red-600"
+                                *ngIf="p.user.password1 !== p.user.password2 && p.user.password1.length > 0 && p.user.password2.length > 0"
+                                >Las contraseñas no coinciden</small
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:grid md:grid-cols-3 md:gap-6">
+            <div class="mt-5 md:mt-0 md:col-span-3">
+                <div class="space-y-6">
+                    <fieldset>
+                        <legend class="text-base font-medium text-gray-900">Indicación legal</legend>
+                        <div class="mt-4 space-y-4">
+                            <div class="flex items-start">
+                                <div class="h-5 flex items-center">
+                                    <input
+                                        [(ngModel)]="p.affiliate.terms_and_conditions"
+                                        value="true"
+                                        id="comments"
+                                        name="comments"
+                                        type="checkbox"
+                                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                    />
+                                </div>
+                                <div class="ml-3 text-sm flex flex-nowrap">
+                                    <p class="text-gray-500">He leído y acepto las</p>
+                                    <span class="underline mx-1 cursor-pointer" (click)="openModalTerms = !openModalTerms"
+                                        >términos, condiciones y políticas de privacidad</span
+                                    >
+                                    <span class="text-red-500">*</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 space-y-4">
+                            <div class="flex items-start">
+                                <div class="h-5 flex items-center">
+                                    <input
+                                        [(ngModel)]="p.affiliate.privacy_policy"
+                                        value="true"
+                                        id="comments"
+                                        name="comments"
+                                        type="checkbox"
+                                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                    />
+                                </div>
+                                <div class="ml-3 text-sm flex flex-nowrap">
+                                    <p class="text-gray-500">He leído y acepto las</p>
+                                    <span class="underline mx-1 cursor-pointer" (click)="openModalPrivacy = !openModalPrivacy"
+                                        >políticas de privacidad</span
+                                    >
+                                    <span class="text-red-500">*</span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="md:col-span-3 flex justify-start" *ngIf="Beneficiaries.length + Parent.length < regular_affiliates + extra_affiliates">
+                <!--   -->
+                <button
+                    type="button"
+                    *ngIf="Beneficiaries.length === 0"
+                    (click)="saveHeadlineAffiliate(p, false, true)"
+                    [disabled]="
+                        (p.user.password1 !== p.user.password2 && p.user.password1.length > 0 && p.user.password2.length > 0) ||
+                        p.user.first_name.length === 0 ||
+                        p.user.last_name.length === 0 ||
+                        p.user.document_type.length === 0 ||
+                        p.user.phone_number.length === 0 ||
+                        p.user.phone_number.length > 10 ||
+                        p.user.gender.length === 0 ||
+                        p.affiliate.marital_status.length === 0 ||
+                        p.affiliate.birthdate.length === 0 ||
+                        p.affiliate.relationship.length === 0 ||
+                        p.address.name.length === 0 ||
+                        p.address.address_detail.length === 0 ||
+                        p.address.neighborhood.length === 0 ||
+                        p.affiliate.privacy_policy === false ||
+                        p.affiliate.terms_and_conditions === false
+                    "
+                    class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Agregar beneficiario
+                </button>
+            </div>
+            <div class="md:col-span-3 flex justify-end" *ngIf="Beneficiaries.length === 0">
+                <button
+                    type="button"
+                    [disabled]="
+                        p.user.first_name.length === 0 ||
+                        p.user.last_name.length === 0 ||
+                        p.user.document_type.length === 0 ||
+                        p.user.phone_number.length === 0 ||
+                        p.user.phone_number.length > 10 ||
+                        p.user.gender.length === 0 ||
+                        p.affiliate.marital_status.length === 0 ||
+                        p.affiliate.birthdate.length === 0 ||
+                        p.affiliate.relationship.length === 0 ||
+                        p.address.name.length === 0 ||
+                        p.address.address_detail.length === 0 ||
+                        p.address.neighborhood.length === 0 ||
+                        p.affiliate.privacy_policy === false ||
+                        p.affiliate.terms_and_conditions === false
+                    "
+                    (click)="saveHeadlineAffiliate(p, true, false)"
+                    class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+                >
+                    Ir a pagar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngFor="let b of Beneficiaries; let i = index" [attr.data-index]="i" class="p-5 bg-white rounded-md shadow" style="margin-bottom: 20px">
+        <div class="flex justify-between flex-wrap gap-x-6">
+            <div>
+                <h2 class="text-xl leading-6 font-medium text-gray-900">Beneficiario #{{ i + 1 }}</h2>
+                <p class="text-sm mb-3 leading-6 font-normal text-gray-400">Indivación del beneficiario #{{ i + 1 }}</p>
+            </div>
+            <div>
+                <button
+                    type="button"
+                    (click)="DeleteBeneficiary(b)"
+                    class="inline-flex items-center rounded border border-transparent bg-gray-100 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div
+            class="rounded-md bg-yellow-50 p-4"
+            *ngIf="Beneficiaries.length + Parent.length > regular_affiliates && i + 2 === Beneficiaries.length + Parent.length"
+        >
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <!-- Heroicon name: solid/exclamation -->
+                    <svg
+                        class="h-5 w-5 text-yellow-400"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-yellow-800">
+                        Al agregar otro integrante extra al plan , se genera un costo de {{ plan_extra_affiliate_fee }}
+                    </h3>
+                    <div class="mt-2 text-sm text-yellow-700">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white lg:p-0 mt-4 py-5 sm:rounded-lg mb-3">
+            <div class="md:grid md:grid-cols-3 md:gap-6">
+                <div class="md:mt-0 md:col-span-3">
+                    <div class="grid grid-cols-6 gap-6">
+                        <!-- Tipo de identificación -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="type-id" class="block text-sm font-medium text-gray-700">
+                                Tipo de identificación <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="type-id"
+                                name="type-id"
+                                [(ngModel)]="b.user.document_type"
+                                autocomplete="type-id"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let d of Documents" [value]="d.id">{{ d.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Número de identificación -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="id-number" class="block text-sm font-medium text-gray-700"
+                                >Número de identificación
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="number"
+                                name="id-number"
+                                [(ngModel)]="b.user.document"
+                                id="id-number"
+                                autocomplete="id-number"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Nombres -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="first-name" class="block text-sm font-medium text-gray-700">
+                                Nombres <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="first-name"
+                                [(ngModel)]="b.user.first_name"
+                                id="first-name"
+                                autocomplete="given-name"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Apellidos -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="last-name" class="block text-sm font-medium text-gray-700">
+                                Apellidos <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="last-name"
+                                [(ngModel)]="b.user.last_name"
+                                id="last-name"
+                                autocomplete="family-name"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Correo electrónico -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="affiliate-email" class="block text-sm font-medium text-gray-700"
+                                >Correo electrónico
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="email"
+                                name="affiliate-email"
+                                [(ngModel)]="b.user.email"
+                                id="affiliate-email"
+                                autocomplete="affiliate-email"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                            <small class="text-red-600" *ngIf="test_email.test(b.user.email) === false && b.user.email.length > 0"
+                                >Este email no es válido
+                            </small>
+                        </div>
+                        <!-- Celular -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="phone-number" class="block text-sm font-medium text-gray-700"
+                                >Celular
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="number"
+                                name="phone-number"
+                                [(ngModel)]="b.user.phone_number"
+                                id="phone-number"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                            <small class="text-red-500 animate-bounce" *ngIf="b.user.phone_number.toString().length > 10"
+                                >Carácteres permitidos: 10</small
+                            >
+                            <small
+                                class="text-red-600"
+                                *ngIf="this.b.user.phone_number.toString().length < 10 && b.user.phone_number.toString().length > 1"
+                                >Este número no es válido</small
+                            >
+                        </div>
+                        <!-- Género -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="gender" class="block text-sm font-medium text-gray-700"
+                                >Género
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="gender"
+                                name="gender"
+                                [(ngModel)]="b.user.gender"
+                                autocomplete="gender"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                                <option [value]="g.id" *ngFor="let g of Genders">{{ g.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Estado civil -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="civi-status" class="block text-sm font-medium text-gray-700"
+                                >Estado civil
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="civi-status"
+                                name="civi-status"
+                                [(ngModel)]="b.affiliate.marital_status"
+                                autocomplete="civi-status"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let maritalStatus of maritalStatusList" [value]="maritalStatus.id">
+                                    {{ maritalStatus.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <!-- Fecha de nacimiento -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="birthday" class="block text-sm font-medium text-gray-700"
+                                >Fecha de nacimiento
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="date"
+                                name="birthday"
+                                id="birthday"
+                                [(ngModel)]="b.affiliate.birthdate"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Parentesco -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="relationship" class="block text-sm font-medium text-gray-700"
+                                >Parentesco
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="relationship"
+                                name="relationship"
+                                [(ngModel)]="b.affiliate.relationship"
+                                autocomplete="relationship"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                                <option value="N/A">N/A</option>
+                                <option value="Titular">Titular</option>
+                                <option value="Familiar">Familiar</option>
+                                <option value="Amigo">Amigo</option>
+                            </select>
+                        </div>
+                        <!-- Dirección de residencia -->
+                        <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                            <label for="address-user" class="block text-sm font-medium text-gray-700"
+                                >Dirección de residencia
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="address-user"
+                                [(ngModel)]="b.address.name"
+                                id="address-user"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- Detalles de la dirección -->
+                        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                            <label for="address-details-user" class="block text-sm font-medium text-gray-700"
+                                >Detalles de la dirección
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="address-details-user"
+                                [(ngModel)]="b.address.address_detail"
+                                id="address-details-user"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <!-- País -->
+                        <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                            <label for="country" class="block text-sm font-medium text-gray-700"
+                                >País
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="country"
+                                [(ngModel)]="country"
+                                name="country"
+                                (change)="GetDpt(country)"
+                                class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let c of Countries" [value]="c.id">{{ c.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Departamento -->
+                        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                            <label for="department" class="block text-sm font-medium text-gray-700"
+                                >Departamento
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="department"
+                                [(ngModel)]="dpt"
+                                [disabled]="Dpts.length === 0"
+                                (change)="GetMunicipality(dpt)"
+                                name="department"
+                                class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let d of Dpts" [value]="d.id">{{ d.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Ciudad / Municipio -->
+                        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                            <label for="municipality" class="block text-sm font-medium text-gray-700"
+                                >Ciudad / Municipio
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="municipality"
+                                [(ngModel)]="municipality"
+                                [disabled]="Municipalities.length === 0"
+                                name="municipality"
+                                (change)="GetNeighborhood(municipality)"
+                                class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let m of Municipalities" [value]="m.id">{{ m.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Barrio -->
+                        <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                            <label for="neighborhood" class="block text-sm font-medium text-gray-700"
+                                >Barrio
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="neighborhood"
+                                [(ngModel)]="b.address.neighborhood"
+                                [disabled]="Neighborhoods.length === 0"
+                                name="neighborhood"
+                                class="disabled:bg-gray-100 disabled:cursor-not-allowed mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            >
+                                <option *ngFor="let n of Neighborhoods" [value]="n.id">{{ n.name }}</option>
+                            </select>
+                        </div>
+                        <!-- Contraseña -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="affiliate-password1" class="block text-sm font-medium text-gray-700"
+                                >Contraseña
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="password"
+                                name="affiliate-password1"
+                                [(ngModel)]="b.user.password1"
+                                id="affiliate-password1"
+                                autocomplete="affiliate-password1"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                            <small
+                                class="text-red-600"
+                                *ngIf="b.user.password1 !== b.user.password2 && b.user.password1.length > 0 && b.user.password2.length > 0"
+                                >Las contraseñas no coinciden</small
+                            >
+                        </div>
+                        <!-- Repite tu contraseña -->
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="affiliate-password2" class="block text-sm font-medium text-gray-700"
+                                >Repite tu contraseña
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="password"
+                                name="affiliate-password2"
+                                [(ngModel)]="b.user.password2"
+                                id="affiliate-password2"
+                                autocomplete="affiliate-password2"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            />
+                            <small
+                                class="text-red-600"
+                                *ngIf="b.user.password1 !== b.user.password2 && b.user.password1.length > 0 && b.user.password2.length > 0"
+                                >Las contraseñas no coinciden</small
+                            >
+                        </div>
+                        <!-- Botones -->
+                        <!-- <div class="col-end-7 col-span-3">
+                            <button
+                                type="button"
+                                *ngIf="Beneficiaries.length + Parent.length < regular_affiliates + extra_affiliates"
+                                (click)="saveBeneficiary(b, true)"
+                                [disabled]="
+                                    (b.user.password1 !== b.user.password2 && b.user.password1.length > 0 && b.user.password2.length > 0) ||
+                                    b.user.first_name.length === 0 ||
+                                    b.user.last_name.length === 0 ||
+                                    b.user.document_type.length === 0 ||
+                                    b.user.phone_number.length === 0 ||
+                                    b.user.phone_number.length > 10 ||
+                                    b.user.gender.length === 0 ||
+                                    b.affiliate.marital_status.length === 0 ||
+                                    b.affiliate.birthdate.length === 0 ||
+                                    b.affiliate.relationship.length === 0 ||
+                                    b.address.name.length === 0 ||
+                                    b.address.address_detail.length === 0 ||
+                                    b.address.neighborhood.length === 0
+                                "
+                                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+                            >
+                                Guardar y añadir otro beneficiario
+                            </button>
+                            <button
+                                type="button"
+                                *ngIf="Beneficiaries.length === i + 1"
+                                (click)="saveBeneficiary(b, false)"
+                                [disabled]="
+                                    (b.user.password1 !== b.user.password2 && b.user.password1.length > 0 && b.user.password2.length > 0) ||
+                                    b.user.first_name.length === 0 ||
+                                    b.user.last_name.length === 0 ||
+                                    b.user.document_type.length === 0 ||
+                                    b.user.phone_number.length === 0 ||
+                                    b.user.phone_number.length > 10 ||
+                                    b.user.gender.length === 0 ||
+                                    b.affiliate.marital_status.length === 0 ||
+                                    b.affiliate.birthdate.length === 0 ||
+                                    b.affiliate.relationship.length === 0 ||
+                                    b.address.name.length === 0 ||
+                                    b.address.address_detail.length === 0 ||
+                                    b.address.neighborhood.length === 0
+                                "
+                                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+                            >
+                                Guardar y pagar
+                            </button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-end" *ngIf="Beneficiaries.length === i + 1">
+            <button
+                type="button"
+                *ngIf="Beneficiaries.length + Parent.length < regular_affiliates + extra_affiliates"
+                (click)="saveBeneficiary(b, true)"
+                [disabled]="
+                    (b.user.password1 !== b.user.password2 && b.user.password1.length > 0 && b.user.password2.length > 0) ||
+                    b.user.first_name.length === 0 ||
+                    b.user.last_name.length === 0 ||
+                    b.user.document_type.length === 0 ||
+                    b.user.phone_number.length === 0 ||
+                    b.user.phone_number.length > 10 ||
+                    b.user.gender.length === 0 ||
+                    b.affiliate.marital_status.length === 0 ||
+                    b.affiliate.birthdate.length === 0 ||
+                    b.affiliate.relationship.length === 0 ||
+                    b.address.name.length === 0 ||
+                    b.address.address_detail.length === 0 ||
+                    b.address.neighborhood.length === 0
+                "
+                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+            >
+                Guardar y añadir otro beneficiario
+            </button>
+            <button
+                type="button"
+                *ngIf="Beneficiaries.length === i + 1"
+                (click)="saveBeneficiary(b, false)"
+                [disabled]="
+                    (b.user.password1 !== b.user.password2 && b.user.password1.length > 0 && b.user.password2.length > 0) ||
+                    b.user.first_name.length === 0 ||
+                    b.user.last_name.length === 0 ||
+                    b.user.document_type.length === 0 ||
+                    b.user.phone_number.length === 0 ||
+                    b.user.phone_number.length > 10 ||
+                    b.user.gender.length === 0 ||
+                    b.affiliate.marital_status.length === 0 ||
+                    b.affiliate.birthdate.length === 0 ||
+                    b.affiliate.relationship.length === 0 ||
+                    b.address.name.length === 0 ||
+                    b.address.address_detail.length === 0 ||
+                    b.address.neighborhood.length === 0
+                "
+                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+            >
+                Guardar y pagar
+            </button>
+            <!-- <button
+                type="button"
+                (click)="AddBeneficiary()"
+                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+            >
+                Agregar beneficiario
+            </button>
+            <button
+                type="button"
+                (click)="GoToPay()"
+                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary disabled:cursor-not-allowed"
+            >
+                Ir a pagar
+            </button> -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal Terms And Conditions -->
+<app-terms-conditions *ngIf="openModalTerms" (responseTermAndConditions)="responseTermAndConditions($event)"></app-terms-conditions>
+<!-- End Modal Terms And Conditions -->
+
+<!-- Modal Privacy Policies -->
+<app-privacy-policies *ngIf="openModalPrivacy" (responsePrivacyPolicies)="responsePrivacyPolicies($event)"></app-privacy-policies>
+<!-- End Modal Privacy Policies -->
+
+<!-- LOADING SCREEN -->
+
+<div
+    *ngIf="loading"
+    wire:loading
+    class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center"
+>
+    <div class="loader ease-linear rounded-full border-4 border-t-4 border-purple-200 h-12 w-12 mb-4"></div>
+    <h2 class="text-center text-white text-xl font-semibold">Estamos procesando y validando tus datos...</h2>
+    <p class="w-1/3 text-center text-white">Esto puede tomar varios segundos, porfavor no cierre ni refresque esta pantalla.</p>
+</div>
